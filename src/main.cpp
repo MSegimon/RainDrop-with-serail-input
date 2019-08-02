@@ -59,9 +59,14 @@ void movePatternDown(byte pattern[8][8], byte pattern1[8][8]) {
 
 void chooseRandomInTopRow(byte pattern[8][8])
 {
-  int r = random(0, 7);
+  int num = random(1, 4);
 
-  pattern[0][r] = 1;
+  for (byte i = 0; i < num; i++)
+  {
+    int r = random(0, 7);
+
+    pattern[0][r] = 1;
+  }
 }
 
 void loop() {
