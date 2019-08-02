@@ -8,7 +8,6 @@ const byte COL_PINS[8] = {A3, A2, A1, A0, 5, 4, 3, 2};
 void setup() {
   // TODO: configure all anode (+) and cathode (-) wires to outputs
   // TODO: turn "off" all the LEDs
-  // Hint: You did the same thing in everylight.ino.
   for (byte i = 0; i < 8; i++) {
     pinMode(ROW_PINS[i], OUTPUT);
     pinMode(COL_PINS[i], OUTPUT);
@@ -20,7 +19,6 @@ void setup() {
   }
 
   // Initialize serial communication
-  // (to be read by Serial Monitor on your computer)
   Serial.begin(9600);
   Serial.setTimeout(100);
 }
@@ -74,28 +72,51 @@ void loop() {
 
   static unsigned long Time = millis();
 
-  // Toggle the LED state
-  //pattern[x][y] = !pattern[x][y];
-  
-  if (millis() - Time >= 1000)
-  {
-    movePatternDown(pattern1, pattern2);
+  static byte state;
+  byte user_input = 0;
 
+  if (Serial.available() > 0)
+  {
+    user_input = Serial.read();
+    state = user_input;
+  }
+
+  switch (state)
+  {
+  case 'g':
+    if (millis() - Time >= 1000)
+    {
+      movePatternDown(pattern1, pattern2);
+
+      for (byte x = 0; x < 8; x++)
+      {
+        for (byte y = 0; y < 8; y++)
+        {
+          pattern1[x][y] = pattern2[x][y];
+
+          pattern2[x][y] = 0;
+        }
+      }
+
+      chooseRandomInTopRow(pattern1);
+
+      Time = millis();
+    }
+    break;
+  case 'p':
+    // No code is needed in this case
+    break;
+  case 's':
     for (byte x = 0; x < 8; x++)
     {
       for (byte y = 0; y < 8; y++)
       {
-        pattern1[x][y] = pattern2[x][y];
-
+        pattern1[x][y] = 0;
         pattern2[x][y] = 0;
       }
     }
-
-    chooseRandomInTopRow(pattern1);
-
-    Time = millis();
+    break;
   }
-  
-  Serial.println(Time);
+
   display(pattern1);
 }
