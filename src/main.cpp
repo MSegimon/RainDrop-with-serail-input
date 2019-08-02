@@ -58,7 +58,10 @@ void movePatternDown(byte pattern[8][8], byte pattern1[8][8]) {
     {
       if (pattern[x][y])
       {
-        pattern1[x - 1][y] = !pattern1[x - 1][y];
+        if (x != 7)
+        {
+          pattern1[x + 1][y] = 1;
+        }
       }
       
     }
@@ -71,20 +74,28 @@ void loop() {
   //static byte pattern[8][8];
   static byte pattern2[8][8];
 
+  static unsigned long Time = millis();
+
   // Toggle the LED state
-  //ledOn[x][y] = !ledOn[x][y];
   //pattern[x][y] = !pattern[x][y];
   
-  movePatternDown(pattern1, pattern2);
-
-  for (byte x = 0; x < 8; x++)
+  if (millis() - Time >= 1000)
   {
-    for (byte y = 0; y < 8; y++)
-    {
-      pattern1[x][y] = pattern2[x][y];
-    }
-    
-  }
+    movePatternDown(pattern1, pattern2);
 
+    for (byte x = 0; x < 8; x++)
+    {
+      for (byte y = 0; y < 8; y++)
+      {
+        pattern1[x][y] = pattern2[x][y];
+
+        pattern2[x][y] = 0;
+      }
+    }
+
+    Time = millis();
+  }
+  
+  Serial.println(Time);
   display(pattern1);
 }
