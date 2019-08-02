@@ -5,8 +5,6 @@
 const byte ROW_PINS[8] = {13, 12, 11, 10, 9, 8, 7, 6};
 const byte COL_PINS[8] = {A3, A2, A1, A0, 5, 4, 3, 2};
 
-byte pattern1[8][8];
-
 void setup() {
   // TODO: configure all anode (+) and cathode (-) wires to outputs
   // TODO: turn "off" all the LEDs
@@ -25,9 +23,6 @@ void setup() {
   // (to be read by Serial Monitor on your computer)
   Serial.begin(9600);
   Serial.setTimeout(100);
-
-  //this is for testing
-  pattern1[0][3] = !pattern1[0][3];
 }
 
 void display(byte pattern[8][8]) {
@@ -47,10 +42,6 @@ void display(byte pattern[8][8]) {
 }
 
 void movePatternDown(byte pattern[8][8], byte pattern1[8][8]) {
-  // TODO : Write code to move the pattern down by one row , and turn the
-  // top row off.
-  // Here 's a doubly - nested for loop to get you started , but you can modify
-  // or replace this if you wish :
 
   for (byte x = 0; x < 8; x++)
   {
@@ -71,7 +62,7 @@ void movePatternDown(byte pattern[8][8], byte pattern1[8][8]) {
 void loop() {
 
   // use 'static' so that it retains its value between successive calls of loop()
-  //static byte pattern[8][8];
+  static byte pattern1[8][8];
   static byte pattern2[8][8];
 
   static unsigned long Time = millis();
