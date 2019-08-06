@@ -34,7 +34,7 @@ void display(byte pattern[8][8]) {
       }
     }
     digitalWrite(ROW_PINS[x], LOW);
-    delayMicroseconds(1000);
+    delayMicroseconds(2400/(x + 1));
     digitalWrite(ROW_PINS[x], HIGH);
   }
 }
@@ -59,7 +59,7 @@ void movePatternDown(byte pattern[8][8], byte pattern1[8][8]) {
 
 void chooseRandomInTopRow(byte pattern[8][8])
 {
-  int num = random(1, 4);
+  int num = random(1, 5);
 
   for (byte i = 0; i < num; i++)
   {
